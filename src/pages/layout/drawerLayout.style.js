@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import defaultTheme from '../../theme/defaultTheme';
+// import defaultTheme from '../../theme/defaultTheme';
 
 export const ContainerFooterDrawer = styled.div`
     display : flex;

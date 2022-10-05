@@ -1,5 +1,4 @@
-import { Input } from "antd";
-import { ContainerIndexProducts, IndexProductsLeft, IndexProductsRight } from "./index.style";
+import { ContainerIndexProducts } from "./index.style";
 import { FaCog } from 'react-icons/fa';
 
 const IndexProducts = () => {
