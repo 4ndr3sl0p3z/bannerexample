@@ -1,25 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import { Suspense, useContext } from "react"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthContext } from "./context/authContext"
+import Login from "./pages/auth/Login";
+import LayoutProvider from "./pages/layout/layoutProvider";
+import ProtectedRoutes from "./routes/protectedRoutes.routes";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+const App = () => {
+  const { infoAGO } = useContext(AuthContext);
+  const { isLogged } = infoAGO;
+
+  // if(!isLogged) logout();
+
+  return(
+    <Suspense
+      fallback = { null}
+    >
+      <BrowserRouter>
+        <LayoutProvider>
+          <Routes>
+            {
+              ProtectedRoutes.map(({ path, Component, admin }) => {
+                console.log(path, isLogged)
+                return(
+                  isLogged ? 
+                  <Route
+                    key  = { path }
+                    path = { path }
+                    element = { <Component/> }
+                  />
+                  :
+                  <Route
+                    key  = { path }
+                    path = { path }
+                    element = { <Navigate to="/login"/> }
+                  />
+                )
+              })
+            }
+            <Route
+              path="login"
+              element = { isLogged === undefined ? <Login/> : <Navigate to="/"/>}
+            />
+          </Routes>
+        </LayoutProvider>
+      </BrowserRouter>
+    </Suspense>
+  )
 }
 
 export default App;
